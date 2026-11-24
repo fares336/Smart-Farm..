@@ -1,0 +1,5 @@
+function selectZone(code){const el=document.getElementById('zoneCode');if(el)el.value=code}
+const csvForm=document.getElementById('csvForm');
+if(csvForm)csvForm.addEventListener('submit',async e=>{e.preventDefault();const out=document.getElementById('uploadStatus');out.textContent='Uploading...';const res=await fetch('/api/upload-csv',{method:'POST',body:new FormData(csvForm)});const data=await res.json();out.textContent=data.ok?`Imported ${data.imported} rows. Refresh to view.`:(data.error||'Upload failed')});
+const pumpForm=document.getElementById('pumpForm');
+if(pumpForm)pumpForm.addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(pumpForm);const out=document.getElementById('pumpStatus');const res=await fetch('/api/pumps/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(f))});const d=await res.json();out.textContent=d.ok?`Request #${d.request_id} saved for review. No hardware was activated.`:(d.error||'Request failed')});
